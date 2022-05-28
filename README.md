@@ -1,7 +1,7 @@
 # spectre_memtools
 String and memory handling functions based around the Spectre misfeature.
 
-Functions:
+### Functions:
 ```c
 [[gnu::constructor]] static inline void spectre_init();
 ```
@@ -23,3 +23,6 @@ char *spectre_strcpy(char * restrict dest, const char * restrict src);
 char *spectre_strncpy(char * restrict dest, const char * restrict src, size_t count);
 ```
 These functions are equivalent to their non `spectre_*` counterparts except that all `const` arguments are accessed speculatively.
+
+### Notes
+Some functions are unreliable when compiled at or above `-O2`, specifically the `spectre_*cpy` family.
