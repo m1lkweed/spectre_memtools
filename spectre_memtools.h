@@ -12,8 +12,8 @@ int spectre_memcmp(const void *buf1, const void *buf2, size_t count);
 void *spectre_memchr(const void *ptr, int ch, size_t count);
 void *spectre_memmem(const void * restrict haystack, size_t haystacklen, const void * restrict needle, size_t needlelen);
 char *spectre_memccpy(void * restrict dest, const void * restrict src, int c, size_t count);
-size_t spectre_strlen(char *str);
-size_t spectre_strnlen(char *str, size_t max_len);
+size_t spectre_strlen(const char *str);
+size_t spectre_strnlen(const char *str, size_t max_len);
 char *spectre_strcpy(char * restrict dest, const char * restrict src);
 char *spectre_strncpy(char * restrict dest, const char * restrict src, size_t count);
 
@@ -225,7 +225,7 @@ char *spectre_memccpy(void * restrict dest, const void * restrict src, int c, si
 	return ((char *)dest) + i;
 }
 
-size_t spectre_strlen(char *str){
+size_t spectre_strlen(const char *str){
 	size_t len = 0;
 	do{
 		if(!read_memory_byte(&str[len]))
@@ -234,7 +234,7 @@ size_t spectre_strlen(char *str){
 	return len;
 }
 
-size_t spectre_strnlen(char *str, size_t max_len){
+size_t spectre_strnlen(const char *str, size_t max_len){
 	if(!str)
 		return 0;
 	size_t len = 0;
