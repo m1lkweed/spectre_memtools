@@ -3,11 +3,11 @@ String and memory handling functions based around the Spectre misfeature.
 
 ### Functions:
 ```c
-[[gnu::constructor]] static inline void spectre_init();
+static inline void spectre_init();
 ```
 Calculates accurate timing values for the rest of the `spectre_*` functions. This function is automatically called at the start of your program when compiled with GCC/clang.
 ```c
-[[gnu::noipa]] char read_memory_byte(const void * const address);
+char read_memory_byte(const void * const address);
 ```
 The core spectre function; reads the value stored at `address` speculatively.
 ```c
