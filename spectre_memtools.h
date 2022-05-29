@@ -4,8 +4,8 @@
 
 #include <stddef.h>
 
-[[gnu::noipa]] char read_memory_byte(const void * const address);
-[[gnu::constructor]] static inline void spectre_init();
+char read_memory_byte(const void * const address);
+static inline void spectre_init();
 void *spectre_memcpy(void * restrict dest, void const * restrict src, size_t n);
 void *spectre_memmove(void *dest, void *src, size_t n);
 int spectre_memcmp(const void *buf1, const void *buf2, size_t count);
@@ -66,7 +66,7 @@ unsigned spectre__$spectre_cache_hit_threshold$(unsigned num){
 	return _$spectre_cache_hit_threshold$ = _$spectre_quick_root$(cached * uncached);
 }
 
-[[gnu::noipa]] char read_memory_byte(const void * const address){
+char read_memory_byte(const void * const address){
 	unsigned int array1_size = 16;
 	uint8_t array1[160] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 	static int results[256] = {0};
