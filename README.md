@@ -26,3 +26,5 @@ These functions are equivalent to their non `spectre_*` counterparts except that
 
 ### Notes
 Some functions are unreliable when compiled at or above `-O2`, specifically the `spectre_*cpy` family.
+
+These functions will not trigger hardware watchpoints on `const` arguments; software watchpoints will prevent speculation and cause an endless loop.
