@@ -5,7 +5,7 @@
 #include <stddef.h>
 
 char read_memory_byte(const void * const address);
-static inline void spectre_init();
+void spectre_init();
 void *spectre_memcpy(void * restrict dest, void const * restrict src, size_t n);
 void *spectre_memmove(void *dest, void *src, size_t n);
 int spectre_memcmp(const void *buf1, const void *buf2, size_t count);
@@ -131,7 +131,7 @@ char read_memory_byte(const void * const address){
 	return (char)j;
 }
 
-[[gnu::constructor]] static inline void spectre_init(){
+[[gnu::constructor]] void spectre_init(){
 	spectre__$spectre_cache_hit_threshold$(0);
 	_mm_clflush(_$spectre_cache_array$);
 	for(size_t i = 0; i < sizeof(_$spectre_cache_array$); ++i)
@@ -152,6 +152,8 @@ void *spectre_memcpy(void * restrict dest, void const * restrict src, size_t n){
 void *spectre_memmove(void *dest, void *src, size_t n){
 	char *dest_ = dest;
 	char *src_ = src;
+	if(dest_ == src_)
+		return dest_;
 	ptrdiff_t branch = n;
 	for(size_t i = 0; i < sizeof(_$spectre_cache_array$); ++i)
 		_$spectre_cache_array$[i] = 1; /* write to _$spectre_cache_array$ so in RAM not copy-on-write zero pages */
