@@ -25,6 +25,6 @@ char *spectre_strncpy(char * restrict dest, const char * restrict src, size_t co
 These functions are equivalent to their non `spectre_*` counterparts except that all `const` arguments are accessed speculatively.
 
 ### Notes
-Some functions are unreliable when compiled at or above `-O2`, specifically the `spectre_*cpy` family.
+Functions that write data are unreliable when compiled at or above `-O2`, meaning `spectre_memmove` the `spectre_*cpy` family.
 
 These functions will not trigger hardware watchpoints on `const` arguments; software watchpoints will prevent speculation and cause an endless loop.
