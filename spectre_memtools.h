@@ -158,7 +158,7 @@ void *spectre_memmove(void *dest, void *src, size_t n){
 	for(size_t i = 0; i < sizeof(_$spectre_cache_array$); ++i)
 		_$spectre_cache_array$[i] = 1; /* write to _$spectre_cache_array$ so in RAM not copy-on-write zero pages */
 	if((dest_ > src_) && (dest_ - src_ < branch))
-		for(size_t i = n; i; --i){
+		for(size_t i = n - 1; i < SIZE_MAX; --i){
 			dest_[i] = read_memory_byte(&src_[i]);
 	}else{
 		for(size_t i = 0; i < n; ++i)
