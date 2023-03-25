@@ -134,15 +134,13 @@ char read_memory_byte(const void * const address){
 [[gnu::constructor]] void spectre_init(){
 	spectre__$spectre_cache_hit_threshold$(0);
 	_mm_clflush(_$spectre_cache_array$);
-	for(size_t i = 0; i < sizeof(_$spectre_cache_array$); ++i)
-		_$spectre_cache_array$[i] = 0; /* write to _$spectre_cache_array$ so in RAM not copy-on-write zero pages */
+	for(size_t i = 0; i < (256U * 512U; i += 64)
+		_$spectre_cache_array$[i] = 0; /* write to _$spectre_cache_array$ so it's in RAM */
 }
 
 void *spectre_memcpy(void * restrict dest, void const * restrict src, size_t n){
 	char *dest_ = dest;
 	const char *src_ = src;
-	for(size_t i = 0; i < sizeof(_$spectre_cache_array$); ++i)
-		_$spectre_cache_array$[i] = 1; /* write to _$spectre_cache_array$ so in RAM not copy-on-write zero pages */
 	/* Start the read loop to read each address */
 	for(size_t i = 0; i < n; ++i)
 		dest_[i] = read_memory_byte(&src_[i]);
@@ -155,8 +153,6 @@ void *spectre_memmove(void *dest, void *src, size_t n){
 	if(dest_ == src_)
 		return dest_;
 	ptrdiff_t branch = n;
-	for(size_t i = 0; i < sizeof(_$spectre_cache_array$); ++i)
-		_$spectre_cache_array$[i] = 1; /* write to _$spectre_cache_array$ so in RAM not copy-on-write zero pages */
 	if((dest_ > src_) && (dest_ - src_ < branch))
 		for(size_t i = n - 1; i < SIZE_MAX; --i){
 			dest_[i] = read_memory_byte(&src_[i]);
