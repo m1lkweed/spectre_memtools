@@ -29,7 +29,7 @@ char *spectre_strncpy(char * restrict dest, const char * restrict src, size_t co
 static _Alignas(64) uint8_t _$spectre_cache_array$[256 * 512];
 unsigned _$spectre_cache_hit_threshold$ = 80; //a good default, set in case spectre_init isn't implicitly or explicitly called
 
-static inline int _$spectre_get_access_time$(void *addr){
+[[gnu::always_inline]] static inline int _$spectre_get_access_time$(void *addr){
 	unsigned time1, time2, junk;
 	[[maybe_unused]] volatile int j;
 	time1 = __rdtscp(&junk);
@@ -134,7 +134,7 @@ char read_memory_byte(const void * const address){
 [[gnu::constructor]] void spectre_init(){
 	spectre__$spectre_cache_hit_threshold$(0);
 	_mm_clflush(_$spectre_cache_array$);
-	for(size_t i = 0; i < (256U * 512U; i += 64)
+	for(size_t i = 0; i < (256U * 512U); i += 64)
 		_$spectre_cache_array$[i] = 0; /* write to _$spectre_cache_array$ so it's in RAM */
 }
 
