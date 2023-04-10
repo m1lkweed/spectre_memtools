@@ -1,4 +1,4 @@
-//(c) m1lkweed 2022, GPLv3+
+//(c) m1lkweed 2022-2023, GPLv3+
 
 #pragma once
 
