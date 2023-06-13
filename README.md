@@ -5,7 +5,7 @@ String and memory handling functions based around the Spectre misfeature.
 ```c
 static inline void spectre_init();
 ```
-Calculates accurate timing values for the rest of the `spectre_*` functions. This function is automatically called at the start of your program when compiled with GCC/clang.
+Calculates accurate timing values for the rest of the `spectre_*` functions. This function is automatically called at the start of your program when compiled with GCC/clang but it's fine to call more than once.
 ```c
 char read_memory_byte(const void * const address);
 ```
@@ -25,6 +25,7 @@ char *spectre_strncpy(char * restrict dest, const char * restrict src, size_t co
 These functions are equivalent to their non `spectre_*` counterparts except that all `const` arguments are accessed speculatively.
 
 ### Notes
-Functions that write data are unreliable when compiled at or above `-O2` on clang, meaning `spectre_memmove` the `spectre_*cpy` family. GCC does not have this issue anymore.
 
 These functions will not trigger hardware watchpoints on `const` arguments; software watchpoints will prevent speculation and cause an endless loop.
+
+Functions that write data are unreliable when compiled at or above `-O2` on clang, meaning `spectre_memmove` the `spectre_*cpy` family.
